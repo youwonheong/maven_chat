@@ -114,6 +114,7 @@ public class ChatClientSocket implements Runnable {
                 writer.close();
             if (socket != null)
                 socket.close();
+            System.out.println("채팅 종료^^");
         } catch (IOException e) {
             System.out.println("프로그램 종료 중 오류가 발생했습니다.");
         }
