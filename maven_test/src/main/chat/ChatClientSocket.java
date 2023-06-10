@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.*;
 import java.io.*;
 import java.util.Scanner;
+
 public class ChatClientSocket implements Runnable {
     private Socket socket;
     private ObjectInputStream reader=null;
@@ -136,9 +137,15 @@ public class ChatClientSocket implements Runnable {
                 if(cinfo.getCommand()==Info.SEND){
                     System.out.println(cinfo.getMessage());
                 }
-                // 들어온 reader값이 다른경우
+                // 들어온 커맨드값이 SEND가 아닐경우 모든 클라이언트 퇴장 및 프로그램을 종료한다.
                 else{
-                    
+                    if (reader != null)
+                        reader.close();
+                    if (writer != null)
+                        writer.close();
+                    if (socket != null)
+                        socket.close();
+                    flag = false;
                 }
             }catch(IOException e){
                 System.out.println("서버로부터 정보를 수신중 오류가 발생했습니다.");
