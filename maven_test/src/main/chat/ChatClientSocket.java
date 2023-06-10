@@ -103,6 +103,7 @@ public class ChatClientSocket implements Runnable {
                 }
                 catch (IOException e){
                     System.out.println("메시지를 전송하는 중 오류가 발생했습니다. 다시 입력하여 주십시오.");
+                    e.printStackTrace();
                     continue;
                 }
         }
@@ -117,6 +118,7 @@ public class ChatClientSocket implements Runnable {
             System.out.println("채팅 종료^^");
         } catch (IOException e) {
             System.out.println("프로그램 종료 중 오류가 발생했습니다.");
+            e.printStackTrace();
         }
     }
 
