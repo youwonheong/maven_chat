@@ -14,6 +14,8 @@ public class ChatServerSocket {
     // 클라이언트 리스트
     private List<ChatServerHandler> list;
 
+    // 쓰레드 리스트
+    private List<Thread> Thread_list;
     public static void main(String[] args) {
 
         ChatServerSocket chatserver = new ChatServerSocket();
@@ -25,17 +27,33 @@ public class ChatServerSocket {
             server = new ServerSocket(9090);
             System.out.print("서버시작");
             list = new ArrayList<ChatServerHandler>();
+            Thread_list = new ArrayList<Thread>();
+
             boolean flag = true;
             while(flag){
                 Socket socket = server.accept();
                 ChatServerHandler handler = new ChatServerHandler(socket,list);
                 // 스레드 시작
                 list.add(handler);
-                new Thread(handler).start();
+                Thread clientThread = new Thread(handler);
+                clientThread.start();
+                Thread_list.add(clientThread);
             }
         }
         catch (IOException e) {
-            System.out.println("서버 프로세스중 오류가 발생했습니다.");
+            try{
+                System.out.println("서버 프로세스중 오류가 발생했습니다. 서버를 종료합니다.");
+                for (Thread thread:Thread_list) {
+                    thread.interrupt();
+                }
+                if (server != null)
+                    server.close();
+
+            }
+            catch (IOException ex){
+                System.out.println("서버종료 중 오류가 발생했습니다. 강제종료합니다.");
+                System.exit(0);
+            }
         }
     }
 
