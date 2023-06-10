@@ -43,12 +43,9 @@ public class ChatServerSocket {
         catch (IOException e) {
             try{
                 System.out.println("서버 프로세스중 오류가 발생했습니다. 서버를 종료합니다.");
-                for (Thread thread:Thread_list) {
-                    thread.interrupt();
-                }
                 if (server != null)
                     server.close();
-
+                System.exit(0);
             }
             catch (IOException ex){
                 System.out.println("서버종료 중 오류가 발생했습니다. 강제종료합니다.");
